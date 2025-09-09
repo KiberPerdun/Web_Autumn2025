@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequency Archives</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="/">
+            <h1>Frequency Archives</h1>
+        </a>
+    </header>
+
+    <div class="search-container">
+        <form action="/" method="GET" class="search-form">
+            <div class="search-bar">
+                <input type="text" name="query" placeholder="Введите автора" value="{{.query}}">
+            </div>
+            <div class="search-button">
+                <button type="submit">Найти</button>
+            </div>
+        </form>
+    </div>
+
+    <main>
+        <div class="authors-container">
+            {{if .authors}}
+                {{range .authors}}
+                    <div style="position:relative;">
+                        {{template "author_card.html" .}}
+                        <form action="/cart/add/{{.ID}}" method="POST" style="position:absolute;top:10px;right:10px;">
+                            <button type="submit" class="cart-add-btn">В корзину</button>
+                        </form>
+                    </div>
+                {{end}}
+            {{else}}
+                <div class="no-results">
+                    <p>По вашему запросу ничего не найдено</p>
+                </div>
+            {{end}}
+        </div>
+        <div style="margin-top:30px;text-align:right;">
+            <a href="/cart" class="cart-view-link">Перейти в корзину</a>
+        </div>
+    </main>
+</div>
+
+<a href="/cart" class="floating-cart-button">
+    <i class="fas fa-shopping-cart cart-icon"></i>
+    {{if gt .cartCount 0}}
+    <span class="cart-badge">{{.cartCount}}</span>
+    {{end}}
+</a>
+
+</body>
+</html>

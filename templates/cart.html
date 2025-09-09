@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина авторов - Frequency Archives</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="/"><h1>Frequency Archives</h1></a>
+    </header>
+    <main>
+        <h2>Корзина авторов</h2>
+        {{if .authors}}
+            <div class="cart-summary">
+                <p>В вашей корзине: <strong>{{len .authors}}</strong> {{if eq (len .authors) 1}}автор{{else}}авторов{{end}}</p>
+            </div>
+            <div class="authors-container">
+                {{range .authors}}
+                    <div style="position:relative;">
+                        {{template "author_card.html" .}}
+                        <form action="/cart/remove/{{.ID}}" method="POST" style="position:absolute;top:10px;right:10px;">
+                            <button type="submit" class="cart-remove-btn">Удалить</button>
+                        </form>
+                    </div>
+                {{end}}
+            </div>
+            <div class="cart-actions">
+                <a href="/" class="back-button">Продолжить выбор</a>
+            </div>
+        {{else}}
+            <div class="empty-cart">
+                <p>Ваша корзина пуста.</p>
+                <p>Добавьте интересующих вас авторов для дальнейшего анализа.</p>
+                <a href="/" class="back-button">Перейти к выбору авторов</a>
+            </div>
+        {{end}}
+    </main>
+</div>
+
+<a href="/cart" class="floating-cart-button">
+    <i class="fas fa-shopping-cart cart-icon"></i>
+    {{if gt (len .authors) 0}}
+    <span class="cart-badge">{{len .authors}}</span>
+    {{end}}
+</a>
+</body>
+</html>

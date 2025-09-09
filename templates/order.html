@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Составление заявки - Frequency Archives</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="/">
+            <h1>Frequency Archives</h1>
+        </a>
+    </header>
+
+    <main class="order-form-container">
+        <div class="order-form">
+            <h2 class="order-form-title">Составление заявки</h2>
+
+            <div class="order-form-content">
+                <div class="text-input-container">
+                    <textarea placeholder="Введите текст" class="text-input" id="analysisText"></textarea>
+                </div>
+
+                <div class="file-upload-container">
+                    <button class="file-upload-button" id="analyzeButton">Загрузить текст</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-result" id="analysisResult" style="display: none;">
+            <div class="result-card">
+                <div class="result-content" id="resultContentContainer">
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<a href="/cart" class="floating-cart-button">
+    <i class="fas fa-shopping-cart cart-icon"></i>
+    {{if gt .cartCount 0}}
+    <span class="cart-badge">{{.cartCount}}</span>
+    {{end}}
+</a>
+
+<script>
+    document.getElementById('analyzeButton').addEventListener('click', function() {
+        const text = document.getElementById('analysisText').value;
+
+        if (!text.trim()) return;
+
+        const authors = [
+            { name: "Лев Толстой", id: 1 },
+            { name: "Фёдор Достоевский", id: 2 },
+            { name: "Антон Чехов", id: 3 }
+        ];
+
+        const multipleAuthors = Math.random() < 0.3;
+        let selectedAuthors = [];
+
+        if (multipleAuthors) {
+            const authorsCount = Math.random() < 0.5 ? 2 : 3;
+
+            const shuffledAuthors = [...authors].sort(() => Math.random() - 0.5);
+
+            selectedAuthors = shuffledAuthors.slice(0, authorsCount);
+
+            selectedAuthors = selectedAuthors.map(author => {
+                return {
+                    ...author,
+                    matchPercent: Math.floor(Math.random() * 36) + 60
+                };
+            }).sort((a, b) => b.matchPercent - a.matchPercent);
+        } else {
+            const authorIndex = Math.floor(Math.random() * 3);
+            const randomAuthor = authors[authorIndex];
+
+            const matchPercent = Math.floor(Math.random() * 36) + 60;
+
+            selectedAuthors = [{
+                ...randomAuthor,
+                matchPercent: matchPercent
+            }];
+        }
+
+        const resultContainer = document.getElementById('resultContentContainer');
+        resultContainer.innerHTML = '';
+
+        selectedAuthors.forEach((author, index) => {
+            let probability;
+            if (author.matchPercent >= 85) {
+                probability = "Высокая";
+            } else if (author.matchPercent >= 75) {
+                probability = "Средняя";
+            } else {
+                probability = "Низкая";
+            }
+
+            const resultElement = document.createElement('div');
+            resultElement.className = 'result-single-line';
+
+            if (index > 0) {
+                resultElement.style.marginTop = '10px';
+                resultElement.style.paddingTop = '10px';
+                resultElement.style.borderTop = '1px dotted #CCC8B8';
+            }
+
+            resultElement.innerHTML = `
+                <span class="result-author"><a href="/author/${author.id}">${author.name}</a></span> —
+                Совпадение: <span class="match-percent">${author.matchPercent}%</span>,
+                Вероятность авторства: <span class="probability">${probability}</span>
+            `;
+
+            resultContainer.appendChild(resultElement);
+        });
+
+        document.getElementById('analysisResult').style.display = 'block';
+    });
+</script>
+</body>
+</html>

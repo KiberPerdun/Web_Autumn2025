@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.author.Name}} - Frequency Archives</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="/">
+            <h1>Frequency Archives</h1>
+        </a>
+    </header>
+
+    <main>
+        <div class="author-detail">
+            <h2>{{.author.Name}}</h2>
+            <div class="author-detail-content">
+                <div class="author-detail-info">
+                    <p class="composition">Состав: {{.author.Composition}}</p>
+                    <p class="detail-text">Объем корпуса: {{.author.CorpusSize}}</p>
+                    <p class="detail-text">Служебные слова: {{.author.ServiceWords}}</p>
+
+                    <div class="frequency-data">
+                        <p class="frequency-title">Частотность служебных слов:</p>
+                        <ul class="frequency-list">
+                            {{range .author.FrequencyWords}}
+                                <li>"{{.Text}}" — {{.Frequency}}%</li>
+                            {{end}}
+                        </ul>
+                    </div>
+
+                    <p class="description">{{.author.Description}}</p>
+                    <div class="author-actions">
+                        <a href="/" class="back-button">Вернуться на главную</a>
+                    </div>
+                </div>
+                <div class="author-detail-image">
+                    <img src="{{.author.ImageURL}}" alt="{{.author.Name}}">
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<a href="/cart" class="floating-cart-button">
+    <i class="fas fa-shopping-cart cart-icon"></i>
+    {{if gt .cartCount 0}}
+    <span class="cart-badge">{{.cartCount}}</span>
+    {{end}}
+</a>
+
+</body>
+</html>
