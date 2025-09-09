@@ -118,19 +118,6 @@ main {
     margin-bottom: 20px;
 }
 
-.author-link:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-image: linear-gradient(to right, #CCC8B8 33%, transparent 0%);
-    background-position: bottom;
-    background-size: 8px 2px;
-    background-repeat: repeat-x;
-}
-
 .author-card {
     display: flex;
     padding-bottom: 10px;
